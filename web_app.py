@@ -627,7 +627,7 @@ def index():
     }
 
     async function prepareDataUrlForPrediction(dataUrl) {
-      const selectedMode = cropModeEl.value;
+      const selectedMode = 'face';
       if (selectedMode !== 'face') {
         return {
           dataUrl,
