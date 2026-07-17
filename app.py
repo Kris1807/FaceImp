@@ -1,8 +1,7 @@
-"""Vercel-friendly FastAPI entrypoint.
+"""Deployment entrypoint for the web demo.
 
-This keeps the main application in web_app.py so local development can keep using:
-    uvicorn web_app:app --reload
-while Vercel can auto-detect a standard FastAPI entry file.
+This keeps the main FastAPI application in web_app.py so local development and
+hosted deployments can both import the same app object.
 """
 
 from web_app import app

@@ -1,7 +1,7 @@
 # Emotion Recognition Web Demo
 
 This repository is the web-only version of the FER emotion recognition project.
-It contains only the files needed to run the browser demo:
+It contains only the files needed to run the browser demo on a hosted backend such as Render:
 
 - FastAPI backend
 - trained `ResNet18` checkpoint
@@ -18,7 +18,7 @@ The goal of this smaller repository is to make deployment easier than the full c
 - `models.py`
 - `best_resnet18.pt`
 - `requirements.txt`
-- `vercel.json`
+- `render.yaml`
 
 ## Local Run
 
@@ -27,7 +27,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 python3 -m pip install --upgrade pip
 python3 -m pip install -r requirements.txt
-python3 -m uvicorn web_app:app --reload
+python3 -m uvicorn app:app --reload
 ```
 
 Then open:
@@ -36,15 +36,34 @@ Then open:
 http://127.0.0.1:8000
 ```
 
-## Vercel Deployment Notes
+## Render Deployment Notes
 
-This repo is prepared for Vercel with:
+This repo is prepared for Render with:
 
 - `app.py` as the FastAPI entrypoint
-- `vercel.json` with `fluid: true`
+- `render.yaml` as a Render Blueprint
+- `.python-version` to keep Render from using its current default Python `3.14.3`
 - a CPU-only PyTorch install path in `requirements.txt`
+- `/health` endpoint for Render HTTP health checks
 
-If Vercel still reports a function bundle that is too large, the next step would be converting the model to ONNX and replacing the server-side PyTorch runtime.
+You can deploy it in either of these ways:
+
+1. Blueprint flow:
+   - Connect the GitHub repo to Render.
+   - Let Render detect `render.yaml`.
+   - Review the generated web service and deploy.
+
+2. Manual web service flow:
+   - Runtime: `Python 3`
+   - Build Command: `pip install -r requirements.txt`
+   - Start Command: `uvicorn app:app --host 0.0.0.0 --port $PORT`
+
+Render docs I matched this to:
+
+- FastAPI quickstart: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+- Python build command: `pip install -r requirements.txt`
+- `.python-version` support for pinning Python
+- `healthCheckPath` in `render.yaml`
 
 ## How The Demo Works
 

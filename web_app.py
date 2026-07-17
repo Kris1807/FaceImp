@@ -211,6 +211,11 @@ def load_runtime(model_name: str = DEFAULT_MODEL_NAME, weights_path: str = str(D
     return WebEmotionRuntime(model_name=model_name, weights_path=Path(weights_path))
 
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
+
 @app.get("/", response_class=HTMLResponse)
 def index():
     return """
